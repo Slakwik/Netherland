@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Nether Earth — Browser</title>
+  <style>
+    body { margin: 0; background: #0f0f12; color: #d8d8d8; font-family: 'Courier New', ui-monospace, monospace; user-select: none; }
+    #wrap { max-width: 980px; margin: 0 auto; padding: 12px; }
+    h1 { margin: 0 0 8px 0; color: #ffc44a; font-size: 20px; letter-spacing: 2px; }
+    #hud { display: flex; flex-wrap: wrap; gap: 14px; padding: 8px 12px; background: #16161c; border: 1px solid #2a2a34; margin-bottom: 6px; font-size: 13px; border-radius: 3px; }
+    .stat .k { color: #888; }
+    .stat .v { color: #ffc44a; font-weight: bold; margin-left: 4px; }
+    .stat.enemy .v { color: #ff7a5a; }
+    #game-box { position: relative; }
+    canvas { display: block; background: #1a2535; border: 1px solid #2a2a34; cursor: default; border-radius: 3px; }
+    #message { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.78); font-size: 28px; color: #ffc44a; text-align: center; border-radius: 3px; }
+    #message.show { display: flex; flex-direction: column; gap: 14px; }
+    #message button { background: #2a5a2a; color: #fff; border: 1px solid #5a8a5a; padding: 8px 20px; font: inherit; font-size: 16px; cursor: pointer; border-radius: 3px; }
+    #message button:hover { background: #3a6a3a; }
+    #panel { background: #16161c; border: 1px solid #2a2a34; margin-top: 6px; padding: 8px 12px; font-size: 12px; border-radius: 3px; min-height: 90px; }
+    #panel .title { color: #ffc44a; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+    #panel .row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; margin: 3px 0; }
+    #panel .lbl { min-width: 82px; color: #999; font-size: 11px; }
+    .pbtn { background: #22222a; border: 1px solid #44444a; color: #ddd; padding: 4px 9px; font: inherit; font-size: 11px; cursor: pointer; border-radius: 2px; }
+    .pbtn:hover { background: #2a2a34; }
+    .pbtn.sel { background: #2c4d70; border-color: #5a8cb5; color: #fff; }
+    .pbtn:disabled { opacity: 0.35; cursor: not-allowed; }
+    #build-btn { background: #2a5a2a; border-color: #5a8a5a; color: #fff; font-weight: bold; padding: 5px 14px; margin-left: 6px; }
+    #build-btn:hover:not(:disabled) { background: #3a6a3a; }
+    #build-btn:disabled { background: #2a2a2a; border-color: #3a3a3a; color: #777; cursor: not-allowed; }
+    #cost { margin-left: 6px; color: #ffc44a; font-size: 11px; }
+    #progress { margin-top: 4px; height: 6px; background: #0a0a0a; border: 1px solid #333; border-radius: 2px; overflow: hidden; }
+    #progress > div { height: 100%; background: #4a8a4a; width: 0%; transition: width 0.1s linear; }
+    #help { font-size: 11px; color: #888; padding: 6px 12px; margin-top: 6px; border: 1px solid #2a2a34; border-radius: 3px; background: #16161c; line-height: 1.55; }
+    #help b { color: #ccc; }
+    .dim { color: #666; }
+    .enemy-color { color: #ff7a5a; }
+    .player-color { color: #6aaaff; }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <h1>NETHER EARTH</h1>
+    <div id="hud">
+      <div class="stat"><span class="k">Materials:</span><span class="v" id="s-mat">0</span></div>
+      <div class="stat"><span class="k">Income:</span><span class="v" id="s-inc">0/s</span></div>
+      <div class="stat"><span class="k">Mines:</span><span class="v" id="s-mines">0</span></div>
+      <div class="stat"><span class="k">Reactors:</span><span class="v" id="s-react">0</span></div>
+      <div class="stat"><span class="k">Warehouses:</span><span class="v" id="s-ware">0</span></div>
+      <div class="stat"><span class="k">Factories:</span><span class="v" id="s-fac">0</span></div>
+      <div class="stat"><span class="k">Robots:</span><span class="v" id="s-rob">0</span></div>
+      <div class="stat enemy"><span class="k">Enemy mats:</span><span class="v" id="s-emat">0</span></div>
+      <div class="stat enemy"><span class="k">Enemy robots:</span><span class="v" id="s-erob">0</span></div>
+    </div>
+    <div id="game-box">
+      <canvas id="game" width="960" height="560"></canvas>
+      <div id="message"></div>
+    </div>
+    <div id="panel">
+      <div id="panel-content"><div class="title">Briefing</div><div class="dim">Loading sprites&hellip;</div></div>
+    </div>
+    <div id="help">
+      <b>WASD</b> or <b>Arrows</b> — move platform ·
+      <b>Click factory</b> — open build menu ·
+      <b>Click own robot</b> — select; then click a tile to move or an enemy to attack ·
+      <b>Right-click</b> — deselect ·
+      Capture neutral/enemy buildings by stepping on them with a robot.
+      <span class="dim">Destroy the <span class="enemy-color">enemy Central Computer</span> to win.</span>
+    </div>
+  </div>
+  <script src="sprites.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
